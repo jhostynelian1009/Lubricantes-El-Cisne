@@ -1,59 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de gestión de inventario — Lubricantes «El Cisne»
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web para la gestión de productos, existencias, entradas de stock, ventas y reportes trazables de Lubricantes «El Cisne», ubicada en San Lorenzo, Esmeraldas.
 
-## About Laravel
+## Propósito
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Desarrollar una solución web responsive que centralice productos, existencias, entradas de stock, ventas y reportes de Lubricantes «El Cisne». El sistema busca reducir las diferencias entre el inventario físico y el registrado, evitar omisiones o duplicidades y mejorar la trazabilidad de cada operación.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Línea base tecnológica
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Framework**: Laravel 12 y PHP 8.2 (arquitectura MVC con capa de servicios).
+- **Base de datos**: MySQL 8.0+ o MariaDB 10.4+.
+- **Frontend**: Blade, Bootstrap 5, JavaScript y Vite.
+- **Localización**: Idioma principal en español (`es`), moneda en USD (`USD`) y zona horaria `America/Guayaquil`.
 
-## Learning Laravel
+## Estructura del repositorio
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```text
+AGENTS.md               Reglas obligatorias para agentes de desarrollo
+README.md               Guía de instalación, configuración y operación
+spec/                   Fuente de verdad del producto, arquitectura y requisitos
+skills/                 Fases ejecutables K-001 a K-012
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requisitos del sistema
 
-## Laravel Sponsors
+- **PHP**: >= 8.2 (extensiones requeridas: PDO, OpenSSL, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath).
+- **Composer**: >= 2.0.
+- **Node.js**: >= 18.0 (Node 22 recomendado) y **npm**.
+- **Base de datos**: MySQL 8.0+ o MariaDB 10.4+.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Instalación y configuración
 
-### Premium Partners
+### 1. Clonar el repositorio
+```bash
+git clone <url-del-repositorio>
+cd Lubricantes-El-Cisne
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Instalar dependencias PHP y JavaScript
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Configuración del entorno `.env`
+Copie el archivo de ejemplo para crear su entorno local y genere la clave de aplicación:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Verifique y ajuste en `.env` las variables de configuración principales:
+```env
+APP_NAME="Lubricantes El Cisne"
+APP_ENV=local
+APP_TIMEZONE=America/Guayaquil
+APP_LOCALE=es
+APP_FALLBACK_LOCALE=es
+APP_FAKER_LOCALE=es_EC
+APP_CURRENCY=USD
 
-## Code of Conduct
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_DATABASE=lubricantes
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Creación de bases de datos (Desarrollo y Testing)
+Cree en su motor MySQL/MariaDB dos bases de datos independientes:
 
-## Security Vulnerabilities
+```sql
+CREATE DATABASE IF NOT EXISTS lubricantes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS lubricantes_testing CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+> **Nota:** Desarrollo y Testing utilizan bases de datos separadas (`lubricantes` y `lubricantes_testing`). El entorno de pruebas está aislado en `phpunit.xml` para no alterar la base de desarrollo.
 
-## License
+### 5. Migraciones
+Para ejecutar las migraciones base en la base de desarrollo:
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 6. Compilación del Frontend (Vite)
+Para desarrollo con recarga automática:
+```bash
+npm run dev
+```
+Para compilar los assets de producción:
+```bash
+npm run build
+```
+
+### 7. Ejecución del Servidor Local
+```bash
+php artisan serve
+```
+Acceda en su navegador a `http://127.0.0.1:8000`.
+
+### 8. Ejecución de Pruebas Automatizadas
+Para ejecutar la suite de pruebas automatizadas:
+```bash
+php artisan test
+```
+
+### 9. Comandos de limpieza de caché
+En caso de realizar cambios de configuración, rutas o plantillas:
+```bash
+php artisan optimize:clear
+```
+
+## Advertencia de seguridad sobre datos reales
+
+⚠️ **ADVERTENCIA IMPORTANTE**: Está estrictamente prohibido utilizar datos reales de clientes, credenciales personales, respaldos de producción o claves confidenciales en archivos `.env`, seeders, pruebas automatizadas o documentación del proyecto. Utilice exclusivamente datos ficticios de prueba.
+
+## Alcance del MVP
+
+El MVP incluye:
+- Autenticación por sesión y autorización mediante roles y permisos.
+- Catálogos de productos, categorías, proveedores y clientes.
+- Registro de entradas, ajustes de inventario y Kardex.
+- Registro de ventas y emisión de comprobante interno imprimible.
+- Panel de control y reportes exportables a CSV.
+
+**Exclusiones del MVP**: Facturación electrónica (SRI), contabilidad, cuentas por pagar, múltiples sucursales/bodegas, comercio electrónico y aplicación móvil.

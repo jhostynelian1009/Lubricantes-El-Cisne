@@ -1,0 +1,40 @@
+project:
+  key: LEC
+  name: Sistema de gestión de inventario de Lubricantes El Cisne
+  version: 0.1.0
+  locale: es_EC
+  timezone: America/Guayaquil
+  currency: USD
+
+architecture:
+  style: MVC con capa de servicios
+  backend: Laravel 12 / PHP 8.2
+  database: MySQL 8 o MariaDB 10.4
+  frontend: Blade / Bootstrap / JavaScript / Vite
+
+actors:
+  - admin
+  - employee
+
+phases:
+  - K-001
+  - K-002
+  - K-003
+  - K-004
+  - K-005
+  - K-006
+  - K-007
+  - K-008
+  - K-009
+  - K-010
+  - K-011
+  - K-012
+
+hard_constraints:
+  - no_public_registration
+  - no_negative_stock
+  - immutable_confirmed_movements
+  - browser_printed_internal_receipt_only
+  - single_company_branch_and_warehouse
+  - decimal_money_and_quantity
+  - no_real_data_in_seeders_or_tests

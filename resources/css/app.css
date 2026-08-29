@@ -1,11 +1,56 @@
-@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+:root {
+    --cisne-primary: #0d47a1;
+    --cisne-secondary: #1565c0;
+    --cisne-accent: #ff8f00;
+    --cisne-dark: #1e293b;
+    --cisne-light: #f8fafc;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--cisne-light);
+    color: #334155;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.navbar-cisne {
+    background-color: var(--cisne-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-cisne .navbar-brand,
+.navbar-cisne .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar-cisne .nav-link:hover,
+.navbar-cisne .nav-link:focus {
+    color: #ffcc80 !important;
+}
+
+.btn-cisne-primary {
+    background-color: var(--cisne-primary);
+    border-color: var(--cisne-primary);
+    color: #ffffff;
+}
+
+.btn-cisne-primary:hover {
+    background-color: var(--cisne-secondary);
+    border-color: var(--cisne-secondary);
+    color: #ffffff;
+}
+
+.footer-cisne {
+    background-color: var(--cisne-dark);
+    color: #94a3b8;
+    padding: 1.5rem 0;
+    margin-top: auto;
 }
