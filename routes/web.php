@@ -70,5 +70,19 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
         Route::post('products/{product}/initial-stock', [ProductController::class, 'initialStock'])->name('products.initial-stock');
         Route::resource('products', ProductController::class)->except(['destroy']);
+
+        Route::resource('stock-entries', \App\Http\Controllers\StockEntryController::class)->except(['show', 'destroy', 'edit', 'update']);
+        Route::get('stock-entries/{stock_entry}', [\App\Http\Controllers\StockEntryController::class, 'show'])->name('stock-entries.show');
+        Route::get('stock-entries/{stock_entry}/edit', [\App\Http\Controllers\StockEntryController::class, 'edit'])->name('stock-entries.edit');
+        Route::put('stock-entries/{stock_entry}', [\App\Http\Controllers\StockEntryController::class, 'update'])->name('stock-entries.update');
+        Route::delete('stock-entries/{stock_entry}', [\App\Http\Controllers\StockEntryController::class, 'destroy'])->name('stock-entries.destroy');
+        Route::post('stock-entries/{stock_entry}/confirm', [\App\Http\Controllers\StockEntryController::class, 'confirm'])->name('stock-entries.confirm');
+
+        Route::get('inventory/adjustments/create', [\App\Http\Controllers\InventoryAdjustmentController::class, 'create'])->name('inventory.adjustments.create');
+        Route::post('inventory/adjustments', [\App\Http\Controllers\InventoryAdjustmentController::class, 'store'])->name('inventory.adjustments.store');
+
+        Route::get('inventory/movements', [\App\Http\Controllers\InventoryMovementController::class, 'index'])->name('inventory.movements.index');
+        Route::get('inventory/kardex', [\App\Http\Controllers\InventoryMovementController::class, 'kardexForm'])->name('inventory.kardex.form');
+        Route::get('inventory/kardex/report', [\App\Http\Controllers\InventoryMovementController::class, 'kardex'])->name('inventory.kardex.report');
     });
 });

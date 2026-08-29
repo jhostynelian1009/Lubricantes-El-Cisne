@@ -14,15 +14,12 @@
                     <a class="nav-link {{ request()->is('/') ? 'active fw-semibold' : '' }}" href="{{ url('/') }}">Inicio</a>
                 </li>
                 @auth
-                    @canany(['categories.manage', 'suppliers.manage', 'customers.manage', 'products.manage', 'inventory.view'])
+                    @canany(['categories.manage', 'suppliers.manage', 'customers.manage'])
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {{ request()->is('categories*', 'suppliers*', 'customers*', 'products*') ? 'active fw-semibold' : '' }}" href="#" id="catalogsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Catálogos e Inventario
+                            <a class="nav-link dropdown-toggle {{ request()->is('categories*', 'suppliers*', 'customers*') ? 'active fw-semibold' : '' }}" href="#" id="catalogsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Catálogos
                             </a>
                             <ul class="dropdown-menu shadow" aria-labelledby="catalogsDropdown">
-                                @canany(['inventory.view', 'products.manage'])
-                                    <li><a class="dropdown-item {{ request()->is('products*') ? 'active' : '' }}" href="{{ route('products.index') }}">Productos</a></li>
-                                @endcanany
                                 @can('categories.manage')
                                     <li><a class="dropdown-item {{ request()->is('categories*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Categorías</a></li>
                                 @endcan
@@ -31,6 +28,27 @@
                                 @endcan
                                 @can('customers.manage')
                                     <li><a class="dropdown-item {{ request()->is('customers*') ? 'active' : '' }}" href="{{ route('customers.index') }}">Clientes</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @canany(['inventory.view', 'products.manage', 'inventory.entries.create'])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->is('products*', 'stock-entries*', 'inventory*') ? 'active fw-semibold' : '' }}" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Inventario
+                            </a>
+                            <ul class="dropdown-menu shadow" aria-labelledby="inventoryDropdown">
+                                @canany(['inventory.view', 'products.manage'])
+                                    <li><a class="dropdown-item {{ request()->is('products*') ? 'active' : '' }}" href="{{ route('products.index') }}">Productos</a></li>
+                                @endcanany
+                                @can('inventory.view')
+                                    <li><a class="dropdown-item {{ request()->is('inventory/movements*') ? 'active' : '' }}" href="{{ route('inventory.movements.index') }}">Movimientos</a></li>
+                                    <li><a class="dropdown-item {{ request()->is('inventory/kardex*') ? 'active' : '' }}" href="{{ route('inventory.kardex.form') }}">Kardex</a></li>
+                                @endcan
+                                @can('inventory.entries.create')
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item {{ request()->is('stock-entries*') ? 'active' : '' }}" href="{{ route('stock-entries.index') }}">Entradas de Stock</a></li>
                                 @endcan
                             </ul>
                         </li>
