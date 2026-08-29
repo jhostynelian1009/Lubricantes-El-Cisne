@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -64,5 +65,10 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::post('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
         Route::resource('customers', CustomerController::class)->except(['destroy']);
+
+        // Productos y Núcleo de Inventario (K-004)
+        Route::post('products/{product}/toggle-status', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+        Route::post('products/{product}/initial-stock', [ProductController::class, 'initialStock'])->name('products.initial-stock');
+        Route::resource('products', ProductController::class)->except(['destroy']);
     });
 });
