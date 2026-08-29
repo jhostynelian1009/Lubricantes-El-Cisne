@@ -54,6 +54,18 @@
                         </li>
                     @endcanany
 
+                    @can('sales.create')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->is('sales*') ? 'active fw-semibold' : '' }}" href="#" id="salesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ventas (POS)
+                            </a>
+                            <ul class="dropdown-menu shadow" aria-labelledby="salesDropdown">
+                                <li><a class="dropdown-item {{ request()->is('sales/create') ? 'active' : '' }}" href="{{ route('sales.create') }}">Punto de Venta (POS)</a></li>
+                                <li><a class="dropdown-item {{ request()->is('sales') && !request()->is('sales/create') ? 'active' : '' }}" href="{{ route('sales.index') }}">Historial de Ventas</a></li>
+                            </ul>
+                        </li>
+                    @endcan
+
                     @can('users.manage')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('users*') ? 'active fw-semibold' : '' }}" href="{{ route('users.index') }}">Usuarios</a>

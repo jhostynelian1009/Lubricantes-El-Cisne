@@ -84,5 +84,11 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('inventory/movements', [\App\Http\Controllers\InventoryMovementController::class, 'index'])->name('inventory.movements.index');
         Route::get('inventory/kardex', [\App\Http\Controllers\InventoryMovementController::class, 'kardexForm'])->name('inventory.kardex.form');
         Route::get('inventory/kardex/report', [\App\Http\Controllers\InventoryMovementController::class, 'kardex'])->name('inventory.kardex.report');
+
+        // Ventas y POS (K-006)
+        Route::get('sales/products/search', [\App\Http\Controllers\SaleController::class, 'searchProducts'])->name('sales.products.search');
+        Route::post('sales/{sale}/confirm', [\App\Http\Controllers\SaleController::class, 'confirm'])->name('sales.confirm');
+        Route::get('sales/{sale}/receipt', [\App\Http\Controllers\SaleController::class, 'receipt'])->name('sales.receipt');
+        Route::resource('sales', \App\Http\Controllers\SaleController::class);
     });
 });

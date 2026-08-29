@@ -17,20 +17,25 @@ class SequenceService
             $year = date('Y');
             $fullType = "{$type}_{$year}";
 
-            $sequence = Sequence::firstOrCreate(
-                ['type' => $fullType],
-                ['current_value' => 0]
-            );
+            /** @var Sequence|null $sequence */
+            $sequence = Sequence::where('type', $fullType)->lockForUpdate()->first();
 
-            // Bloquear la fila para evitar condiciones de carrera
-            $lockedSequence = Sequence::where('id', $sequence->id)
-                ->lockForUpdate()
-                ->first();
+            if (!$sequence) {
+                try {
+                    $sequence = Sequence::create([
+                        'type' => $fullType,
+                        'current_value' => 0,
+                    ]);
+                    $sequence = Sequence::where('id', $sequence->id)->lockForUpdate()->first();
+                } catch (\Throwable $e) {
+                    $sequence = Sequence::where('type', $fullType)->lockForUpdate()->firstOrFail();
+                }
+            }
 
-            $lockedSequence->current_value += 1;
-            $lockedSequence->save();
+            $sequence->current_value += 1;
+            $sequence->save();
 
-            $paddedValue = str_pad($lockedSequence->current_value, 6, '0', STR_PAD_LEFT);
+            $paddedValue = str_pad((string) $sequence->current_value, 6, '0', STR_PAD_LEFT);
 
             return "{$prefix}-{$year}-{$paddedValue}";
         });
