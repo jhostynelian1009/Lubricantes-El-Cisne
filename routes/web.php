@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,5 +54,15 @@ Route::middleware(['auth', 'active'])->group(function () {
             Route::post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
             Route::post('/{user}/reset-password', [UserController::class, 'resetPassword'])->name('reset-password');
         });
+
+        // Catálogos Base (Categorías, Proveedores, Clientes)
+        Route::post('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+        Route::resource('categories', CategoryController::class)->except(['destroy']);
+
+        Route::post('suppliers/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])->name('suppliers.toggle-status');
+        Route::resource('suppliers', SupplierController::class)->except(['destroy']);
+
+        Route::post('customers/{customer}/toggle-status', [CustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
+        Route::resource('customers', CustomerController::class)->except(['destroy']);
     });
 });

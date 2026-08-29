@@ -13,38 +13,45 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('/') ? 'active fw-semibold' : '' }}" href="{{ url('/') }}">Inicio</a>
                 </li>
-                {{-- Navegación autenticada preparada para K-002 --}}
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Panel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Inventario</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Ventas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Reportes</a>
-                    </li>
+                    @canany(['categories.manage', 'suppliers.manage', 'customers.manage'])
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->is('categories*', 'suppliers*', 'customers*') ? 'active fw-semibold' : '' }}" href="#" id="catalogsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Catálogos
+                            </a>
+                            <ul class="dropdown-menu shadow" aria-labelledby="catalogsDropdown">
+                                @can('categories.manage')
+                                    <li><a class="dropdown-item {{ request()->is('categories*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Categorías</a></li>
+                                @endcan
+                                @can('suppliers.manage')
+                                    <li><a class="dropdown-item {{ request()->is('suppliers*') ? 'active' : '' }}" href="{{ route('suppliers.index') }}">Proveedores</a></li>
+                                @endcan
+                                @can('customers.manage')
+                                    <li><a class="dropdown-item {{ request()->is('customers*') ? 'active' : '' }}" href="{{ route('customers.index') }}">Clientes</a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
+
+                    @can('users.manage')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('users*') ? 'active fw-semibold' : '' }}" href="{{ route('users.index') }}">Usuarios</a>
+                        </li>
+                    @endcan
                 @endauth
             </ul>
 
             <div class="d-flex align-items-center">
-                {{-- Estructura de usuario/autenticación preparada para K-002 --}}
                 @auth
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name ?? 'Usuario' }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
-                            <li><a class="dropdown-menu-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item {{ request()->is('profile*') ? 'active' : '' }}" href="{{ route('profile.show') }}">Perfil</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form method="POST" action="{{ route('logout') ?? '#' }}">
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
                                 </form>
@@ -52,7 +59,6 @@
                         </ul>
                     </div>
                 @else
-                    {{-- Espacio para enlace a Login en K-002 --}}
                     @if (Route::has('login'))
                         <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm px-3">Iniciar Sesión</a>
                     @endif
